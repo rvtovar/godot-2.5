@@ -2,6 +2,9 @@ using Godot;
 
 public partial class PlayerMoveState : PlayerState
 {
+    [Export(PropertyHint.Range, "0,20,0.1")]
+    private float speed = 5;
+
     public override void _PhysicsProcess(double delta)
     {
         if (characterNode.direction == Vector2.Zero)
@@ -11,7 +14,7 @@ public partial class PlayerMoveState : PlayerState
         }
 
         characterNode.Velocity = new(characterNode.direction.X, 0, characterNode.direction.Y);
-        characterNode.Velocity *= 5;
+        characterNode.Velocity *= speed;
         characterNode.MoveAndSlide();
         characterNode.Flip();
     }

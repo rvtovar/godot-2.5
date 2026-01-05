@@ -1,14 +1,16 @@
 using Godot;
-using System;
 
 public partial class StateMachine : Node
 {
-    [Export ]private Node currentState;
-    [Export] private Node[] states;
+    [Export]
+    private Node currentState;
+
+    [Export]
+    private Node[] states;
 
     public override void _Ready()
     {
-        currentState.Notification(5001);
+        currentState.Notification(GameConstants.NOTIFICATION_ENTER_STATE);
     }
 
     public void SwitchState<T>()
@@ -22,10 +24,10 @@ public partial class StateMachine : Node
             }
         }
 
-        if (newState == null) return;
-        currentState.Notification(5002);
+        if (newState == null)
+            return;
+        currentState.Notification(GameConstants.NOTIFICATION_EXIT_STATE);
         currentState = newState;
-        currentState.Notification(5001);
+        currentState.Notification(GameConstants.NOTIFICATION_ENTER_STATE);
     }
-
 }

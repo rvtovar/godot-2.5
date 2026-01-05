@@ -4,13 +4,13 @@ public partial class Player : CharacterBody3D
 {
     [ExportGroup("Required Nodes")]
     [Export]
-    public AnimationPlayer animationPlayer = null;
+    public AnimationPlayer animationPlayer { get; private set; }
 
     [Export]
-    public Sprite3D sprite = null;
+    public Sprite3D sprite { get; private set; }
 
     [Export]
-    public StateMachine stateMachine = null;
+    public StateMachine stateMachine { get; private set; }
     public Vector2 direction = new();
 
     public override void _Ready() { }
