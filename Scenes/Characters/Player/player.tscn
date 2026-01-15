@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cdtmbo1bly071"]
+[gd_scene load_steps=48 format=3 uid="uid://cdtmbo1bly071"]
 
 [ext_resource type="Texture2D" uid="uid://ds3vcdyygv3bo" path="res://Assets/Sprites/Characters/Player/Idle Blinking/Idle Blinking_000.png" id="1_27cb7"]
 [ext_resource type="Script" uid="uid://dpbhwe4mv2alh" path="res://Scripts/Characters/Player/Player.cs" id="1_eiaiy"]
@@ -36,10 +36,10 @@
 [ext_resource type="Script" uid="uid://di431jcyos0e0" path="res://Scripts/Characters/Player/PlayerMoveState.cs" id="33_4yec0"]
 [ext_resource type="Texture2D" uid="uid://dqgal1lrhsjuw" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_001.png" id="33_e5xbx"]
 [ext_resource type="Texture2D" uid="uid://dh28ny3bkb631" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_002.png" id="34_8uivy"]
-[ext_resource type="Script" uid="uid://cm14v0khcanw2" path="res://Scripts/Characters/StateMachine.cs" id="34_me3gr"]
 [ext_resource type="Texture2D" uid="uid://f3cdmjo6hcff" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_003.png" id="35_yfcdn"]
 [ext_resource type="Texture2D" uid="uid://b81jgkm5eml6l" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_004.png" id="36_68bc3"]
 [ext_resource type="Texture2D" uid="uid://dox81iqdwrr8k" path="res://Assets/Sprites/Characters/Player/Sliding/Sliding_005.png" id="37_mf3wh"]
+[ext_resource type="PackedScene" uid="uid://detmvcg3eh8dy" path="res://Scenes/Characters/state_machine.tscn" id="38_gs6v2"]
 [ext_resource type="Script" uid="uid://dctxr6h7mqsk8" path="res://Scripts/Characters/Player/PlayerDashState.cs" id="40_2qsty"]
 
 [sub_resource type="Animation" id="Animation_2iqoh"]
@@ -118,13 +118,20 @@ _data = {
 &"running": SubResource("Animation_e5xbx")
 }
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uvgfe"]
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "sprite", "stateMachine")]
+collision_layer = 2
+collision_mask = 5
+floor_max_angle = 1.9198622
+floor_snap_length = 0.3
 script = ExtResource("1_eiaiy")
 animationPlayer = NodePath("AnimationPlayer")
 sprite = NodePath("Sprite3D")
 stateMachine = NodePath("StateMachine")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+pixel_size = 0.0025
 texture_filter = 0
 texture = ExtResource("1_27cb7")
 
@@ -134,8 +141,7 @@ libraries = {
 }
 autoplay = "idle"
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("currentState", "states")]
-script = ExtResource("34_me3gr")
+[node name="StateMachine" parent="." node_paths=PackedStringArray("currentState", "states") instance=ExtResource("38_gs6v2")]
 currentState = NodePath("IdleState")
 states = [NodePath("IdleState"), NodePath("MoveState"), NodePath("DashState")]
 
@@ -152,5 +158,10 @@ dashTimerNode = NodePath("Timer")
 [node name="Timer" type="Timer" parent="StateMachine/DashState"]
 wait_time = 0.4
 one_shot = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3257512, 0)
+shape = SubResource("CapsuleShape3D_uvgfe")
+debug_color = Color(0.7785011, 0.21506831, 0.9318111, 0.41960785)
 
 [connection signal="timeout" from="StateMachine/DashState/Timer" to="StateMachine/DashState" method="HandleDashTimeout"]
