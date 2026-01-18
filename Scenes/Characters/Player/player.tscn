@@ -264,7 +264,7 @@ stats = Array[Object]([SubResource("Resource_f4hmr"), SubResource("Resource_0lsg
 animationPlayer = NodePath("AnimationPlayer")
 sprite = NodePath("Sprite3D")
 stateMachine = NodePath("StateMachine")
-hurtBox = NodePath("Hitbox")
+hurtBox = NodePath("Hurtbox")
 hitBox = NodePath("Hitbox")
 hitboxShape = NodePath("Hitbox/CollisionShape3D")
 
@@ -319,6 +319,16 @@ collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_a30gu")
+disabled = true
 debug_color = Color(4.5724214e-06, 0.63943696, 0.3752825, 0.41960785)
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33186895, 0)
+shape = SubResource("CapsuleShape3D_uvgfe")
+debug_color = Color(0.7785011, 0.21506831, 0.9318111, 0.41960785)
 
 [connection signal="timeout" from="StateMachine/DashState/Timer" to="StateMachine/DashState" method="HandleDashTimeout"]
