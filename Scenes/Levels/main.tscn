@@ -95,6 +95,7 @@ shape = SubResource("BoxShape3D_7i1ub")
 debug_color = Color(0.73983973, 0.22015601, 0.99999994, 0.41960785)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="Env"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13908744, 0.10276312, -0.13995504)
 navigation_mesh = SubResource("NavigationMesh_nk5xi")
 
 [node name="FloorGridMap" type="GridMap" parent="Env/NavigationRegion3D"]
