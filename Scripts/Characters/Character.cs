@@ -1,7 +1,12 @@
+using System.Linq;
 using Godot;
 
 public abstract partial class Character : CharacterBody3D
 {
+    [Export]
+    private StatResource[] stats;
+
+    // Required Nodes
     [ExportGroup("Required Nodes")]
     [Export]
     public AnimationPlayer animationPlayer { get; private set; }
@@ -12,6 +17,16 @@ public abstract partial class Character : CharacterBody3D
     [Export]
     public StateMachine stateMachine { get; private set; }
 
+    [Export]
+    public Area3D hurtBox { get; private set; }
+
+    [Export]
+    public Area3D hitBox { get; private set; }
+
+    [Export]
+    public CollisionShape3D hitboxShape { get; private set; }
+
+    // AI Nodes
     [ExportGroup("AI Nodes")]
     [Export]
     public Path3D pathNode { get; private set; }
@@ -27,7 +42,10 @@ public abstract partial class Character : CharacterBody3D
 
     public Vector2 direction = new();
 
-    public override void _Ready() { }
+    public override void _Ready()
+    {
+        hurtBox.AreaEntered += HandleHurtboxEntered;
+    }
 
     public void Flip()
     {
@@ -37,5 +55,23 @@ public abstract partial class Character : CharacterBody3D
             return;
         bool isMovingLeft = Velocity.X < 0;
         sprite.FlipH = isMovingLeft;
+    }
+
+    private void HandleHurtboxEntered(Area3D area)
+    {
+        StatResource health = GetStatResource(Stat.Health);
+        Character player = area.GetOwner<Character>();
+        health.statValue -= player.GetStatResource(Stat.Strength).statValue;
+        GD.Print(health.statValue);
+    }
+
+    private StatResource GetStatResource(Stat stat)
+    {
+        return stats.Where((elem) => elem.statType == stat).FirstOrDefault();
+    }
+
+    public void ToggleHitBox(bool flag)
+    {
+        hitboxShape.Disabled = flag;
     }
 }
