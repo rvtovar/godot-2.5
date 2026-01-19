@@ -4,6 +4,12 @@ public abstract partial class EnemyState : CharacterState
 {
     protected Vector3 destination;
 
+    public override void _Ready()
+    {
+        base._Ready();
+        characterNode.GetStatResource(Stat.Health).OnZero += HandleZeroHealth;
+    }
+
     protected Vector3 GetPointGlobalPosition(int index)
     {
         Vector3 localPos = characterNode.pathNode.Curve.GetPointPosition(index);
@@ -22,5 +28,10 @@ public abstract partial class EnemyState : CharacterState
     protected void HandleChaseAreaBodyEntered(Node3D body)
     {
         characterNode.stateMachine.SwitchState<EnemyChaseState>();
+    }
+
+    private void HandleZeroHealth()
+    {
+        characterNode.stateMachine.SwitchState<EnemyDeathState>();
     }
 }

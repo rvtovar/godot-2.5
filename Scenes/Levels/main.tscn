@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dnhnu0n4lssdo"]
+[gd_scene load_steps=14 format=3 uid="uid://dnhnu0n4lssdo"]
 
 [ext_resource type="Script" uid="uid://co33bgetvgkol" path="res://Scripts/Levels/Main.cs" id="1_s0gyx"]
 [ext_resource type="PackedScene" uid="uid://cdtmbo1bly071" path="res://Scenes/Characters/Player/player.tscn" id="2_yjsus"]
 [ext_resource type="MeshLibrary" uid="uid://b74hsmd0sfps" path="res://Resources/tiles.tres" id="3_u872a"]
 [ext_resource type="PackedScene" uid="uid://bmqsid4aict11" path="res://Scenes/Characters/Enemy/enemy.tscn" id="4_nk5xi"]
+[ext_resource type="PackedScene" uid="uid://b2d2yqauprs2l" path="res://Scenes/General/ui.tscn" id="5_7i1ub"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u872a"]
 size = Vector3(2.057129, 3.6135254, 7.932678)
@@ -56,9 +57,6 @@ script = ExtResource("1_s0gyx")
 
 [node name="Player" parent="." instance=ExtResource("2_yjsus")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.365217, 1.8432896, 0.17652798)
-
-[node name="Camera3D" type="Camera3D" parent="Player"]
-transform = Transform3D(0.9999999, 0, 0, 0, 0.96592563, 0.258819, 0, -0.25881898, 0.96592575, 0, 2, 6)
 
 [node name="Env" type="Node3D" parent="."]
 
@@ -134,3 +132,8 @@ curve = SubResource("Curve3D_w0lsm")
 [node name="Path3D4" type="Path3D" parent="Enemies"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 curve = SubResource("Curve3D_tpkgp")
+
+[node name="UI" parent="." instance=ExtResource("5_7i1ub")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881904, 0, -0.25881904, 0.9659259, 0.8885174, 10.117885, -39.664528)

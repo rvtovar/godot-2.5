@@ -1,4 +1,4 @@
-[gd_scene load_steps=121 format=3 uid="uid://bmqsid4aict11"]
+[gd_scene load_steps=122 format=3 uid="uid://bmqsid4aict11"]
 
 [ext_resource type="Script" uid="uid://cmwq3e02qxytd" path="res://Scripts/Characters/Enemy/Enemy.cs" id="1_1215o"]
 [ext_resource type="Texture2D" uid="uid://c8i4ucnl676jp" path="res://Assets/Sprites/Characters/Enemy Knight/Idle/0_Demons_of_Darkness_Idle_000.png" id="1_flmpx"]
@@ -107,6 +107,7 @@
 [ext_resource type="Script" uid="uid://p12671xqkvwm" path="res://Scripts/Characters/Enemy/EnemyPatrolState.cs" id="104_ryjw6"]
 [ext_resource type="Script" uid="uid://c3xx7xmnddvxs" path="res://Scripts/Characters/Enemy/EnemyChaseState.cs" id="105_vpbt8"]
 [ext_resource type="Script" uid="uid://b3onfgmrqdeb6" path="res://Scripts/Characters/Enemy/EnemyAttackState.cs" id="106_15hc4"]
+[ext_resource type="Script" uid="uid://dyv0hv2ujib7u" path="res://Scripts/Characters/Enemy/EnemyDeathState.cs" id="108_u4k2w"]
 
 [sub_resource type="Resource" id="Resource_u4k2w"]
 script = ExtResource("2_dwudo")
@@ -308,7 +309,7 @@ shape = SubResource("CapsuleShape3D_flmpx")
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("currentState", "states") instance=ExtResource("100_g7ysa")]
 currentState = NodePath("IdleState")
-states = [NodePath("IdleState"), NodePath("ReturnState"), NodePath("PatrolState"), NodePath("ChaseState"), NodePath("AttackState")]
+states = [NodePath("IdleState"), NodePath("ReturnState"), NodePath("PatrolState"), NodePath("ChaseState"), NodePath("AttackState"), NodePath("DeathState")]
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("101_1215o")
@@ -333,6 +334,9 @@ autostart = true
 
 [node name="AttackState" type="Node" parent="StateMachine"]
 script = ExtResource("106_15hc4")
+
+[node name="DeathState" type="Node" parent="StateMachine"]
+script = ExtResource("108_u4k2w")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 debug_enabled = true

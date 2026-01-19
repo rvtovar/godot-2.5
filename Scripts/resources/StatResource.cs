@@ -1,8 +1,11 @@
+using System;
 using Godot;
 
 [GlobalClass]
 public partial class StatResource : Resource
 {
+    public Action OnZero;
+
     [Export]
     public Stat statType { get; private set; }
 
@@ -12,6 +15,13 @@ public partial class StatResource : Resource
     public float statValue
     {
         get => _statValue;
-        set { _statValue = Mathf.Clamp(value, 0, Mathf.Inf); }
+        set
+        {
+            _statValue = Mathf.Clamp(value, 0, Mathf.Inf);
+            if (_statValue == 0)
+            {
+                OnZero?.Invoke();
+            }
+        }
     }
 }

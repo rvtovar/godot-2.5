@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public partial class PlayerDeathState : PlayerState
+public partial class EnemyDeathState : EnemyState
 {
     protected override void EnterState()
     {
