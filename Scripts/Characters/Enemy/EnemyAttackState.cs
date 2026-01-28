@@ -47,6 +47,7 @@ public partial class EnemyAttackState : EnemyState
 
     private void PerformHit()
     {
+        GD.Print("Hitting Player");
         characterNode.ToggleHitBox(false);
         characterNode.hitBox.GlobalPosition = targetPos;
     }

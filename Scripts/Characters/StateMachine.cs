@@ -7,22 +7,28 @@ public partial class StateMachine : Node
     private Node currentState;
 
     [Export]
-    private Node[] states;
+    private CharacterState[] states;
 
     public override void _Ready()
     {
+        base._Ready();
         currentState.Notification(GameConstants.NOTIFICATION_ENTER_STATE);
     }
 
     public void SwitchState<T>()
     {
-        Node newState = states.Where((state) => state is T).FirstOrDefault();
+        CharacterState newState = states.Where((state) => state is T).FirstOrDefault();
 
         if (newState == null)
             return;
 
         if (currentState is T)
             return;
+
+        if (!newState.canTransition())
+        {
+            return;
+        }
         currentState.Notification(GameConstants.NOTIFICATION_EXIT_STATE);
         currentState = newState;
         currentState.Notification(GameConstants.NOTIFICATION_ENTER_STATE);

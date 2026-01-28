@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Godot;
 
@@ -26,6 +27,9 @@ public abstract partial class Character : CharacterBody3D
     [Export]
     public CollisionShape3D hitboxShape { get; private set; }
 
+    [Export]
+    public Timer shaderTimer { get; private set; }
+
     // AI Nodes
     [ExportGroup("AI Nodes")]
     [Export]
@@ -42,9 +46,25 @@ public abstract partial class Character : CharacterBody3D
 
     public Vector2 direction = new();
 
+    private ShaderMaterial shader;
+
     public override void _Ready()
     {
+        shader = (ShaderMaterial)sprite.MaterialOverlay;
         hurtBox.AreaEntered += HandleHurtboxEntered;
+
+        sprite.TextureChanged += HandleTextureChanged;
+        shaderTimer.Timeout += HandleShaderTimeout;
+    }
+
+    private void HandleShaderTimeout()
+    {
+        shader.SetShaderParameter("active", false);
+    }
+
+    private void HandleTextureChanged()
+    {
+        shader.SetShaderParameter("tex", sprite.Texture);
     }
 
     public void Flip()
@@ -59,10 +79,15 @@ public abstract partial class Character : CharacterBody3D
 
     private void HandleHurtboxEntered(Area3D area)
     {
+        if (area is not IHitbox hitbox)
+        {
+            return;
+        }
         StatResource health = GetStatResource(Stat.Health);
-        Character player = area.GetOwner<Character>();
-        health.statValue -= player.GetStatResource(Stat.Strength).statValue;
-        GD.Print(health.statValue);
+        float damage = hitbox.GetDamage();
+        health.statValue -= damage;
+        shader.SetShaderParameter("active", true);
+        shaderTimer.Start();
     }
 
     public StatResource GetStatResource(Stat stat)

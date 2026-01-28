@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://belaf741avdab"]
+
+[ext_resource type="Script" uid="uid://fk08xg5wujrd" path="res://Scripts/Reward/Treasure.cs" id="1_gw06v"]
+[ext_resource type="Texture2D" uid="uid://d14ikbeo5x2f4" path="res://Assets/Sprites/General/16x16.png" id="1_linxi"]
+[ext_resource type="Texture2D" uid="uid://c2oylexneppbf" path="res://Assets/Sprites/UI/Keyboard Letters and Symbols.png" id="2_e2ds3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gw06v"]
+size = Vector3(1, 1, 0.13581848)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gw06v"]
+radius = 2.0
+
+[node name="treasure" type="StaticBody3D" unique_id=1154792732 node_paths=PackedStringArray("areaNode", "spriteNode")]
+script = ExtResource("1_gw06v")
+areaNode = NodePath("Area3D")
+spriteNode = NodePath("InteractiveIcon")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=117049386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01962471, 0, 0)
+pixel_size = 0.05
+alpha_cut = 2
+texture_filter = 0
+texture = ExtResource("1_linxi")
+region_enabled = true
+region_rect = Rect2(16, 7, 16, 23)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=473946354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0005569458)
+shape = SubResource("BoxShape3D_gw06v")
+
+[node name="InteractiveIcon" type="Sprite3D" parent="." unique_id=1220476895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6628326, 0)
+visible = false
+pixel_size = 0.02
+texture_filter = 0
+texture = ExtResource("2_e2ds3")
+region_enabled = true
+region_rect = Rect2(65, 32, 13, 12)
+
+[node name="Area3D" type="Area3D" parent="." unique_id=825314988]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1268023938]
+shape = SubResource("SphereShape3D_gw06v")

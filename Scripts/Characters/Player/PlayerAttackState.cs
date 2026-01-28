@@ -6,6 +6,9 @@ public partial class PlayerAttackState : PlayerState
     [Export]
     private Timer comboTimer;
 
+    [Export]
+    private PackedScene lightningScene;
+
     [Export(PropertyHint.Range, "0.5,1.0,0.05")]
     private float distanceMult = 0.75f;
 
@@ -25,12 +28,26 @@ public partial class PlayerAttackState : PlayerState
         characterNode.animationPlayer.Play(GameConstants.ANIM_ATTACK + comboCounter, -1, 2.5f);
 
         characterNode.animationPlayer.AnimationFinished += HandleAnimationFinished;
+        characterNode.hitBox.BodyEntered += HandleBodyEntered;
     }
 
     protected override void ExitState()
     {
         characterNode.animationPlayer.AnimationFinished -= HandleAnimationFinished;
+        characterNode.hitBox.BodyEntered -= HandleBodyEntered;
         comboTimer.Start();
+    }
+
+    private void HandleBodyEntered(Node3D body)
+    {
+        if (comboCounter != maxComboCount)
+        {
+            return;
+        }
+
+        Node3D lightning = lightningScene.Instantiate<Node3D>();
+        GetTree().CurrentScene.AddChild(lightning);
+        lightning.GlobalPosition = body.GlobalPosition;
     }
 
     private void HandleAnimationFinished(StringName animName)
